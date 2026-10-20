@@ -1,0 +1,156 @@
+[
+  {
+    "id": "E01",
+    "query": "What events cause loss or damage to the insured two-wheeler to be covered?",
+    "expected_section_type": "cover",
+    "expected_outcome": "Retrieve the relevant own-damage cover clause.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=INDEMNIFY-THE-INSURED-IN-RESPECT-OF-LOSS-OF-OR-DAMAGE-TO-ACCESSORIES-T; page=18; section_type=limitation; quote=specifically declared by the insured caused by burglary, housebreaking or theft. Subject otherwise to the terms conditions limitations and exceptions of this policy. IMT. 35. HIRED VEHICLES – DRIVEN BY HIRER * (Applicable to four wheeled vehicles with carrying capacity not exceeding 6 passengers and Motorised Two wheelers) It is hereby understood a"
+  },
+  {
+    "id": "E02",
+    "query": "Is theft of the insured vehicle mentioned in the policy?",
+    "expected_section_type": "cover",
+    "expected_outcome": "Retrieve a passage explicitly mentioning theft, if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=INDEMNIFY-THE-INSURED-IN-RESPECT-OF-LOSS-OF-OR-DAMAGE-TO-ACCESSORIES-T; page=18; section_type=limitation; quote=specifically declared by the insured caused by burglary, housebreaking or theft. Subject otherwise to the terms conditions limitations and exceptions of this policy. IMT. 35. HIRED VEHICLES – DRIVEN BY HIRER * (Applicable to four wheeled vehicles with carrying capacity not exceeding 6 passengers and Motorised Two wheelers) It is hereby understood a"
+  },
+  {
+    "id": "E03",
+    "query": "What exclusions apply to a claim?",
+    "expected_section_type": "exclusion",
+    "expected_outcome": "Retrieve exclusion provisions rather than only the main cover clause.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=2-5; page=19; section_type=condition; quote=(2) To pay the first Rs..... of each and every claim in respect of which indemnity would but for this endorsement have been provided by Section I of this Policy. If the expenditure incurred by the Insurer shall include the amount for which the Insured is responsible hereunder, such amount shall be repaid by the insured to the Insurer forthwith. For"
+  },
+  {
+    "id": "E04",
+    "query": "What should the insured do after an accident?",
+    "expected_section_type": "condition",
+    "expected_outcome": "Retrieve claim notification/cooperation conditions if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=3; page=12; section_type=limitation; quote=(3) such compensation shall be payable only with the approval of the insured named in the policy and directly to the injured person or his/her legal representative(s) whose receipt shall be a full discharge in respect of the injury of such person. Subject otherwise to the terms exceptions conditions and limitations of this policy. * The Capital Sum"
+  },
+  {
+    "id": "E05",
+    "query": "How is insured declared value or depreciation determined?",
+    "expected_section_type": "limitation",
+    "expected_outcome": "Retrieve IDV/depreciation provision if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=MANUFACTURERS-HAVE-DISCONTINUED-TO-MANUFACTURE-IS-TO-BE-DETERMINED-ON-; page=3; section_type=limitation; quote=between the Company and the Insured. IDV shall be tre ated as the ‘Market Value’ throughout the policy period without any further depreciation for the purpose of Total Loss (TL) / Constructive Total Loss (CTL) claims. The insured Vehicle shall be treated as CTL if the aggregate cost of retrieval and / or rep air of the Vehicle, subject to terms and"
+  },
+  {
+    "id": "E06",
+    "query": "Does the policy cover damage while the vehicle is being used for paid delivery?",
+    "expected_section_type": "exclusion",
+    "expected_outcome": "Retrieve relevant use restrictions/exclusions; do not infer an answer if the PDF does not support it.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=THE-INSURED-MAY-AUTHORISE-THE-REPAIR-OF-THE-VEHICLE-NECESSITATED-BY-DA; page=2; section_type=general; quote=may be liable under this Policy provided that:-"
+  },
+  {
+    "id": "E07",
+    "query": "Find clauses that refer to another section or condition.",
+    "expected_section_type": null,
+    "expected_outcome": "Return passages with extracted cross-reference candidates.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=CONTAINED-IN-ITEM-I-OF-SECTION-II-OF-THIS-POLICY-TREAT-THE-HIRER-AS-A-; page=19; section_type=general; quote=wheeler. Further it is agreed that the insured shall forward to the insurer the supplementary proposal referred to above, completed by the Hirer immediately after receipt thereof which proposal as well as that referred to in this policy shall be the basis of the contract expressed in this endorsement so far as it relates to the indemnity which is o"
+  },
+  {
+    "id": "E08",
+    "query": "What does the policy say about third-party liability?",
+    "expected_section_type": null,
+    "expected_outcome": "Retrieve liability-related passage only if present in this policy wording.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=GENERAL-EXCEPTIONS-APPLICABLE-TO-ALL-SECTIONS-OF-THE-POLICY; page=5; section_type=general; quote=The Company shall not be liable in respect of:"
+  },
+  {
+    "id": "E09",
+    "query": "What documents are required to submit a claim?",
+    "expected_section_type": "procedure",
+    "expected_outcome": "Retrieve a claim-document procedure if included; otherwise mark not found.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=OR-LOSS-OR-DAMAGE-AND-IN-THE-EVENT-OF-ANY-CLAIM-AND-THEREAFTER-THE-INS; page=6; section_type=general; quote=information and assistance as the Company shall require. Every letter claim writ summons and/or process or copy thereof shall be forwarded to the Company immediately on receipt by the Insured."
+  },
+  {
+    "id": "E10",
+    "query": "Find the policy's general exceptions.",
+    "expected_section_type": "exclusion",
+    "expected_outcome": "Retrieve general exceptions if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=GENERAL-EXCEPTIONS-APPLICABLE-TO-ALL-SECTIONS-OF-THE-POLICY; page=5; section_type=general; quote=The Company shall not be liable in respect of:"
+  },
+  {
+    "id": "E11",
+    "query": "What is the policy period?",
+    "expected_section_type": null,
+    "expected_outcome": "Find policy period wording if present in the supplied document.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=LESS-THE-PRO-RATA-PORTION-THEREOF-FOR-THE-PERIOD-THE-POLICY-HAS-BEEN-I; page=7; section_type=condition; quote=cancelled at any time by the insured on seven days‟ notice by recorded delivery and provided no"
+  },
+  {
+    "id": "E12",
+    "query": "What does indemnify mean in the context of the cover clause?",
+    "expected_section_type": "cover",
+    "expected_outcome": "Return the clause using indemnity wording, without adding a legal definition not in the source.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=I; page=19; section_type=cover; quote=(i) shall have entered into a hire contract with the insured and who prior to such hiring shall have satisfactorily completed and signed a supplementary proposal form**."
+  },
+  {
+    "id": "E13",
+    "query": "Find conditions related to a valid driving licence.",
+    "expected_section_type": "condition",
+    "expected_outcome": "Retrieve relevant licence condition if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=C; page=5; section_type=cover; quote=c. The Owner-Driver holds an effective driving license, in accordance with the provisions of Rule 3 of the Central Motor Vehicles Rules, 1989, at the time of the accident"
+  },
+  {
+    "id": "E14",
+    "query": "Find wording about the vehicle being used outside permitted purposes.",
+    "expected_section_type": null,
+    "expected_outcome": "Retrieve applicable use restrictions if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=WHILE-THE-VEHICLE-IS-BEING-USED-ELSEWHERE-THAN-IN-THE-INSURED-S-PREMIS; page=12; section_type=cover; quote=specifically required for a mission to fight a fire. For the purposes of this endorsement ‘Use confined to own premises’ shall mean use only on insured’s premises to which public have no general right of access. IMT 15. PERSONAL ACCIDENT COVER TO THE INSURED OR ANY NAMED PERSON"
+  },
+  {
+    "id": "E15",
+    "query": "What does the document say about accessories fitted to the vehicle?",
+    "expected_section_type": null,
+    "expected_outcome": "Retrieve the passage about accessories if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=ACCESSORIES-OR-MAY-PAY-IN-CASH-THE-AMOUNT-OF-THE-LOSS-OR-DAMAGE-AND-TH; page=6; section_type=cover; quote=shall not exceed: a. For total loss / constructive total loss of the Vehicle -the Insured’s Declared Value (IDV) of the Vehicle (including accessories thereon) as specified in the Schedule less the value of the wreck."
+  },
+  {
+    "id": "E16",
+    "query": "Find clauses with the phrase subject to.",
+    "expected_section_type": null,
+    "expected_outcome": "Return passages and extracted reference candidates.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=THE-SUBJECT-OF-INDEMNITY-UNDER-THIS-POLICY-AND; page=4; section_type=general; quote=B. Undertake the defence of proceedings in any Court of Law in respect of any act or alleged"
+  },
+  {
+    "id": "E17",
+    "query": "Find the definition of insured or insured vehicle.",
+    "expected_section_type": "definition",
+    "expected_outcome": "Retrieve definitions only if explicitly present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=3-THE-INSURED-SHALL-GIVE-THE-COMPANY-EVERY-ASSISTANCE-TO-SEE-THAT-SUCH; page=2; section_type=general; quote=charges are reasonable. SUM INSURED -INSURED’S DECLARED VALUE (IDV) The Insured’s Declared Value (IDV) of the vehicle will be deemed to be the ‘SUM INSURED’ for the"
+  },
+  {
+    "id": "E18",
+    "query": "What limits or depreciation percentages apply to total loss?",
+    "expected_section_type": "limitation",
+    "expected_outcome": "Retrieve the relevant table/provision if text extraction captured it.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=THE-SCHEDULE-OF-AG-E-WISE-DEPRECIATION-AS-SHOWN-BELOW-IS-APPLICABLE-FO; page=3; section_type=limitation; quote=Loss/Constructive Total Loss (TL/CTL) claims only."
+  },
+  {
+    "id": "E19",
+    "query": "Find the procedure for inspection or survey after damage.",
+    "expected_section_type": "procedure",
+    "expected_outcome": "Retrieve the relevant process if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=OR-LOSS-OR-DAMAGE-AND-IN-THE-EVENT-OF-ANY-CLAIM-AND-THEREAFTER-THE-INS; page=6; section_type=general; quote=information and assistance as the Company shall require. Every letter claim writ summons and/or process or copy thereof shall be forwarded to the Company immediately on receipt by the Insured."
+  },
+  {
+    "id": "E20",
+    "query": "Search for cancellation or termination conditions.",
+    "expected_section_type": "condition",
+    "expected_outcome": "Retrieve cancellation/termination wording if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=1; page=19; section_type=condition; quote=(1) for any loss, damage or liability due to or arising from theft or conversion by the Hirer unless covered by payment of additional premium @ 1.50% on IDV. (Endt. IMT 43 is to be used.)"
+  },
+  {
+    "id": "E21",
+    "query": "What does the policy say about geographical area?",
+    "expected_section_type": null,
+    "expected_outcome": "Retrieve geographical-area wording if present.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=AGREED-THAT-NOTWITHSTANDING-ANYTHING-CON-TAINED-IN-THIS-POLICY-TO-THE-; page=8; section_type=general; quote=in this Policy shall from the . . ./ . ./ . . . . to the . …/. . /. . . .(both days inclusive) be deemed to include *"
+  },
+  {
+    "id": "E22",
+    "query": "Find any clause that modifies or limits another cover provision.",
+    "expected_section_type": null,
+    "expected_outcome": "Retrieve modifying provisions and their cross-reference candidates.",
+    "supporting_passage": "Retrieved candidate (relevance not yet verified): document=insurance_policy_pdf.pdf; clause_id=INCURRED-OF-ANY-EXPENDITURE-FOR-WHICH-PROVISION-HAS-BEEN-MADE-UNDER-TH; page=15; section_type=condition; quote=expenditure by the insurer in the exercise of his discretion under Condition no …** of this policy . If the expenditure incurred by the insurer shall include any amount for which the insured is responsible hereunder such amount shall be repaid by the insured to the insurer forthwith. For the purpose of this Endorsement the expression \"event” shall "
+  }
+]

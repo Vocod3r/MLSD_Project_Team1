@@ -1,0 +1,640 @@
+[
+  {
+    "id": "E01",
+    "query": "What events cause loss or damage to the insured two-wheeler to be covered?",
+    "expected_section_type": "cover",
+    "results": [
+      {
+        "clause_id": "INDEMNIFY-THE-INSURED-IN-RESPECT-OF-LOSS-OF-OR-DAMAGE-TO-ACCESSORIES-T",
+        "page": 18,
+        "section_type": "limitation",
+        "score": 0.6615,
+        "text": "specifically declared by the insured caused by burglary, housebreaking or theft. Subject otherwise to the terms conditions limitations and exceptions of this policy. IMT. 35. HIRED VEHICLES – DRIVEN BY HIRER * (Applicable to four wheeled vehicles with carrying capacity not exceeding 6 passengers and Motorised Two wheelers) It is hereby understood and agreed that notwithstanding anything to the contrary contained in this Policy unless the vehicle insured is be ing driven by or is for the purpose "
+      },
+      {
+        "clause_id": "INDEPENDENTLY-OF-ANY-OTHER-CAUSE-SHALL-WITHIN-THREE-CALENDAR-MONTHS-OF",
+        "page": 12,
+        "section_type": "general",
+        "score": 0.6018,
+        "text": "result in : Policy Wording_ Future Secure Two Wheeler Package Policy_Version.2.0. UIN: IRDAN132RP0016V01200708 13"
+      },
+      {
+        "clause_id": "3-IN-TERMS-OF-AND-SUBJECT-TO-THE-LIMITATIONS-OF-THE-INDEMNITY-GRANTED-",
+        "page": 3,
+        "section_type": "limitation",
+        "score": 0.5838,
+        "text": "the Company will indemnify any driver who is driving the vehicle on the Insured’s order or with Insured’s permission provided that such driver shall as though he/she was the Insured observe Policy Wording_ Future Secure Two Wheeler Package Policy_Version.2.0. UIN: IRDAN132RP0016V01200708 4 fulfill and be subject to the terms exceptions and conditions of this Policy in so far as they apply."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E02",
+    "query": "Is theft of the insured vehicle mentioned in the policy?",
+    "expected_section_type": "cover",
+    "results": [
+      {
+        "clause_id": "INDEMNIFY-THE-INSURED-IN-RESPECT-OF-LOSS-OF-OR-DAMAGE-TO-ACCESSORIES-T",
+        "page": 18,
+        "section_type": "limitation",
+        "score": 0.7589,
+        "text": "specifically declared by the insured caused by burglary, housebreaking or theft. Subject otherwise to the terms conditions limitations and exceptions of this policy. IMT. 35. HIRED VEHICLES – DRIVEN BY HIRER * (Applicable to four wheeled vehicles with carrying capacity not exceeding 6 passengers and Motorised Two wheelers) It is hereby understood and agreed that notwithstanding anything to the contrary contained in this Policy unless the vehicle insured is be ing driven by or is for the purpose "
+      },
+      {
+        "clause_id": "BY-REASON-OF-THE-NEGLIGENCE-OF-THE-WITHIN-NAMED-INSURED-OR-OF-ANY-EMPL",
+        "page": 19,
+        "section_type": "limitation",
+        "score": 0.7178,
+        "text": "vehicle insured is let on hire. Provided that any such hirer shall as though he/she were the insured observe fulfill and be subject to the terms, exceptions, conditions and limitations of this policy in so far as they apply. IMT. 43. Theft and conversion Risk"
+      },
+      {
+        "clause_id": "SUBJECT-OTHERWISE-TO-THE-TERMS-EXCEPTIONS-CONDITIONS-AND-LIMITATIONS-O-2",
+        "page": 10,
+        "section_type": "limitation",
+        "score": 0.6846,
+        "text": "* The name of the certifying Automobile Association is to be inserted. ** Premium discount calculated as per tariff provision is to be inserted. For mid -term certification of installation of Anti-Theft device pro-rata proportion of tariff discount for the unexpired period is to be inserted. IMT. 11. A. VEHICLES LAID UP (Lay-up period declared) Notwithstanding anything to the contrary contained herein it is hereby understood and agreed that from …/ …/….. to…/ …./….. the vehicle insured is laid u"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E03",
+    "query": "What exclusions apply to a claim?",
+    "expected_section_type": "exclusion",
+    "results": [
+      {
+        "clause_id": "2-5",
+        "page": 19,
+        "section_type": "condition",
+        "score": 0.4774,
+        "text": "(2) To pay the first Rs..... of each and every claim in respect of which indemnity would but for this endorsement have been provided by Section I of this Policy. If the expenditure incurred by the Insurer shall include the amount for which the Insured is responsible hereunder, such amount shall be repaid by the insured to the Insurer forthwith. For the purpose of this endorsement the expression \"Claim\" shall mean a claim or series of claims arising out of one cause in respect of the vehicle."
+      },
+      {
+        "clause_id": "ALIGHTING-FROM-THE-VEHICLE-INSURED-AT-THE-TIME-OF-THE-OCCURRENCE-OF-TH",
+        "page": 18,
+        "section_type": "general",
+        "score": 0.4701,
+        "text": "claim arises. # # It is further understood and agreed that while the vehicle insured is engaged in ..…………………….* the insured shall bear the first Rs…….…..@ (or any less amount for which the claim may be assessed ) of each and every claim under Section I of this Policy. Provided that if the insure r shall make any payment in exercise of its discretion under Condition No. 3 of the policy in settlement of any claim and such payment includes the amount for which the insured is responsible by reason o"
+      },
+      {
+        "clause_id": "OCCURRENCES-OR-ANY-CONSEQUENCES-THEREOF-AND-IN-DEFAULT-OF-SUCH-PROOF-T",
+        "page": 6,
+        "section_type": "general",
+        "score": 0.4536,
+        "text": "liable to make any payment in respect of such a claim."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E04",
+    "query": "What should the insured do after an accident?",
+    "expected_section_type": "condition",
+    "results": [
+      {
+        "clause_id": "3",
+        "page": 12,
+        "section_type": "limitation",
+        "score": 0.5847,
+        "text": "(3) such compensation shall be payable only with the approval of the insured named in the policy and directly to the injured person or his/her legal representative(s) whose receipt shall be a full discharge in respect of the injury of such person. Subject otherwise to the terms exceptions conditions and limitations of this policy. * The Capital Sum Insured (CSI) per passenger is to be inserted. IMT.16. PERSONAL ACCIDENT TO UNNAMED PASSENGERS OTHER THAN INSURED AND THE PAID DRIVER AND CLEANER {Fo"
+      },
+      {
+        "clause_id": "THE-INSURED-MAY-AUTHORISE-THE-REPAIR-OF-THE-VEHICLE-NECESSITATED-BY-DA",
+        "page": 2,
+        "section_type": "general",
+        "score": 0.5773,
+        "text": "may be liable under this Policy provided that:-"
+      },
+      {
+        "clause_id": "THE-COMPANY-WILL-BEAR-THE-REASONABLE-COST-OF-PROTECTION-AND-REMOVAL-TO",
+        "page": 2,
+        "section_type": "general",
+        "score": 0.5739,
+        "text": "redelivery to the Insured but not exceeding in all Rs.300/-in respect of any one accident."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E05",
+    "query": "How is insured declared value or depreciation determined?",
+    "expected_section_type": "limitation",
+    "results": [
+      {
+        "clause_id": "MANUFACTURERS-HAVE-DISCONTINUED-TO-MANUFACTURE-IS-TO-BE-DETERMINED-ON-",
+        "page": 3,
+        "section_type": "limitation",
+        "score": 0.5589,
+        "text": "between the Company and the Insured. IDV shall be tre ated as the ‘Market Value’ throughout the policy period without any further depreciation for the purpose of Total Loss (TL) / Constructive Total Loss (CTL) claims. The insured Vehicle shall be treated as CTL if the aggregate cost of retrieval and / or rep air of the Vehicle, subject to terms and conditions of the policy, exceeds 75% of the IDV of the Vehicle."
+      },
+      {
+        "clause_id": "A-4",
+        "page": 14,
+        "section_type": "limitation",
+        "score": 0.5147,
+        "text": "(a) (i) the price quoted in the latest catalogue or the price list issued by the Manufacturer or his Agent for the country in which the vehicle insured is held for repair less depreciation applicable; OR"
+      },
+      {
+        "clause_id": "3-THE-INSURED-SHALL-GIVE-THE-COMPANY-EVERY-ASSISTANCE-TO-SEE-THAT-SUCH",
+        "page": 2,
+        "section_type": "general",
+        "score": 0.5112,
+        "text": "charges are reasonable. SUM INSURED -INSURED’S DECLARED VALUE (IDV) The Insured’s Declared Value (IDV) of the vehicle will be deemed to be the ‘SUM INSURED’ for the"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E06",
+    "query": "Does the policy cover damage while the vehicle is being used for paid delivery?",
+    "expected_section_type": "exclusion",
+    "results": [
+      {
+        "clause_id": "THE-INSURED-MAY-AUTHORISE-THE-REPAIR-OF-THE-VEHICLE-NECESSITATED-BY-DA",
+        "page": 2,
+        "section_type": "general",
+        "score": 0.6143,
+        "text": "may be liable under this Policy provided that:-"
+      },
+      {
+        "clause_id": "SCHEDULE-WHILST-IT-THESE-IS-ARE-FITTED-IN-OR-ON-THE-VEHICLE-INSURED-WH",
+        "page": 16,
+        "section_type": "cover",
+        "score": 0.5714,
+        "text": "occasioned by any of the perils mentioned in Section.1 of the policy. The insurer shall, however, not be liable for loss of or damage to such fitting(s) caused by/as a result of mechanical or electrical breakdown. Provided always that the liability of the insurer hereunder shall not exceed the Insured's Declared Value (IDV) of the item. Subject otherwise to the terms conditions limitations and exceptions of this Policy. IMT.25. CNG/ LPG KIT IN BI-FUEL SYSTEM (Own Damage cover for the kit ) In co"
+      },
+      {
+        "clause_id": "NOTWITHSTANDING-ANYTHING-TO-THE-CONTRARY-CONTAINED-IN-THIS-POLICY-IT-I",
+        "page": 14,
+        "section_type": "cover",
+        "score": 0.5673,
+        "text": "that in the event of loss or damage to the vehicle insured and/or its accessories necessitating the supply of a part not obtainable from stocks held in the country in which the vehicle insured is held for repair or in the event of the insurer exercising the option under ………., * to pay i n cash the amount of the loss or damage the liability of the insurer in respect of any such part shall be limited to :-"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E07",
+    "query": "Find clauses that refer to another section or condition.",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "CONTAINED-IN-ITEM-I-OF-SECTION-II-OF-THIS-POLICY-TREAT-THE-HIRER-AS-A-",
+        "page": 19,
+        "section_type": "general",
+        "score": 0.2729,
+        "text": "wheeler. Further it is agreed that the insured shall forward to the insurer the supplementary proposal referred to above, completed by the Hirer immediately after receipt thereof which proposal as well as that referred to in this policy shall be the basis of the contract expressed in this endorsement so far as it relates to the indemnity which is operative whilst the vehicle is let on hire to such Hirer. Subject otherwise to the terms, exceptions, conditions and limitations of this Policy. NOTE "
+      },
+      {
+        "clause_id": "SECTION-1-OF-THE-POLICY-IN-RESPECT-OF-EACH-AND-EVERY-EVENT-INCLUDING-E",
+        "page": 15,
+        "section_type": "general",
+        "score": 0.2602,
+        "text": "loss/constructive total loss ) the first Rs.……..*** (or any less expenditure which may be incurred) of"
+      },
+      {
+        "clause_id": "ANY-EXPENDITURE-FOR-WHICH-PROV-ISION-HAS-BEEN-MADE-UNDER-THIS-POLICY-A",
+        "page": 15,
+        "section_type": "condition",
+        "score": 0.2601,
+        "text": "insurer in the exercise of his discretion under Condition no ….# of this policy . If the expenditure incurred by the insurer shall include any amount for which the insured is responsib le hereunder such amount shall be repaid by the insured to the insurer forthwith. For the purpose of this Endorsement the expression \"event” shall mean an event or series of events"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E08",
+    "query": "What does the policy say about third-party liability?",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "GENERAL-EXCEPTIONS-APPLICABLE-TO-ALL-SECTIONS-OF-THE-POLICY",
+        "page": 5,
+        "section_type": "general",
+        "score": 0.5657,
+        "text": "The Company shall not be liable in respect of:"
+      },
+      {
+        "clause_id": "INDIRECT-CONSEQUENCES-OF-ANY-OF-THE-SAID-OCCURRENCES-AND-IN-THE-EVENT-",
+        "page": 6,
+        "section_type": "cover",
+        "score": 0.512,
+        "text": "Insured shall prove that the accidental loss damage and/or liability arose independently of and was in"
+      },
+      {
+        "clause_id": "EXISTENCE-ANY-OTHER-INSURANCE-COVERING-THE-SAME-LIABILITY-THE-COMPANY-",
+        "page": 7,
+        "section_type": "cover",
+        "score": 0.507,
+        "text": "contribute more than its ratable proportion of any compensation, cost or expense."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E09",
+    "query": "What documents are required to submit a claim?",
+    "expected_section_type": "procedure",
+    "results": [
+      {
+        "clause_id": "OR-LOSS-OR-DAMAGE-AND-IN-THE-EVENT-OF-ANY-CLAIM-AND-THEREAFTER-THE-INS",
+        "page": 6,
+        "section_type": "general",
+        "score": 0.5152,
+        "text": "information and assistance as the Company shall require. Every letter claim writ summons and/or process or copy thereof shall be forwarded to the Company immediately on receipt by the Insured."
+      },
+      {
+        "clause_id": "ALIGHTING-FROM-THE-VEHICLE-INSURED-AT-THE-TIME-OF-THE-OCCURRENCE-OF-TH",
+        "page": 18,
+        "section_type": "general",
+        "score": 0.4068,
+        "text": "claim arises. # # It is further understood and agreed that while the vehicle insured is engaged in ..…………………….* the insured shall bear the first Rs…….…..@ (or any less amount for which the claim may be assessed ) of each and every claim under Section I of this Policy. Provided that if the insure r shall make any payment in exercise of its discretion under Condition No. 3 of the policy in settlement of any claim and such payment includes the amount for which the insured is responsible by reason o"
+      },
+      {
+        "clause_id": "OCCURRENCES-OR-ANY-CONSEQUENCES-THEREOF-AND-IN-DEFAULT-OF-SUCH-PROOF-T",
+        "page": 6,
+        "section_type": "general",
+        "score": 0.3909,
+        "text": "liable to make any payment in respect of such a claim."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E10",
+    "query": "Find the policy's general exceptions.",
+    "expected_section_type": "exclusion",
+    "results": [
+      {
+        "clause_id": "GENERAL-EXCEPTIONS-APPLICABLE-TO-ALL-SECTIONS-OF-THE-POLICY",
+        "page": 5,
+        "section_type": "general",
+        "score": 0.6964,
+        "text": "The Company shall not be liable in respect of:"
+      },
+      {
+        "clause_id": "SHALL-AS-THOUGH-SUCH-REPRESENTATIVE-WAS-THE-INSURED-OBSERVE-FULFILL-AN",
+        "page": 4,
+        "section_type": "condition",
+        "score": 0.552,
+        "text": "exceptions and conditions of this Policy in so far as they apply."
+      },
+      {
+        "clause_id": "ARISING-OUT-OF-ONE-CAUSE-IN-CONNECTION-WITH-THE-VEHICLE-INSURED-IN-RES",
+        "page": 15,
+        "section_type": "limitation",
+        "score": 0.4878,
+        "text": "provided under this policy. Subject otherwise to the terms conditions limitations and exceptions of this Policy. * (i) to insert amount as appropriate to the class of vehicle insured as per GR.40 of the tariff."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E11",
+    "query": "What is the policy period?",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "LESS-THE-PRO-RATA-PORTION-THEREOF-FOR-THE-PERIOD-THE-POLICY-HAS-BEEN-I",
+        "page": 7,
+        "section_type": "condition",
+        "score": 0.6672,
+        "text": "cancelled at any time by the insured on seven days‟ notice by recorded delivery and provided no"
+      },
+      {
+        "clause_id": "SUBJECT-OTHERWISE-TO-THE-TERMS-EXCEPTIONS-CONDITIONS-AND-LIMITATIONS-O",
+        "page": 10,
+        "section_type": "limitation",
+        "score": 0.6431,
+        "text": "* For full policy period, the full tariff discount to b e inserted. For mid -term membership, prorata proportion of the tariff discount for the unexpired policy period is to be inserted. ** Insert name of the concerned Automobile Association. IMT.10. INSTALLATION OF ANTI-THEFT DEVICE (Not applicable to Motor Trade Policies) In consideration of certification by …………………* that an Anti -Theft device approved by"
+      },
+      {
+        "clause_id": "PURPOSE-OF-THIS-POLICY-WHICH-IS-FIXED-AT-THE-COMMENCEMENT-OF-EACH-POLI",
+        "page": 2,
+        "section_type": "general",
+        "score": 0.6147,
+        "text": "Vehicle. The IDV of the Vehicle (and side car/accessories, if any, fitted to the Vehicle) is to be fixed on the basis Policy Wording_ Future Secure Two Wheeler Package Policy_Version.2.0. UIN: IRDAN132RP0016V01200708 3 of the manufacturer’s listed selling price of the brand and model as the insured Vehicle at the commencement of insurance/renewal and adjusted for depreciation (as per schedule below)."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E12",
+    "query": "What does indemnify mean in the context of the cover clause?",
+    "expected_section_type": "cover",
+    "results": [
+      {
+        "clause_id": "I",
+        "page": 19,
+        "section_type": "cover",
+        "score": 0.4078,
+        "text": "(i) shall have entered into a hire contract with the insured and who prior to such hiring shall have satisfactorily completed and signed a supplementary proposal form**."
+      },
+      {
+        "clause_id": "II-3",
+        "page": 19,
+        "section_type": "cover",
+        "score": 0.405,
+        "text": "(ii) shall have satisfied the insured -"
+      },
+      {
+        "clause_id": "IT-IS-HEREBY-DEC-LARED-AND-AGREED-THAT-THE-COMPANY-WILL-INDEMNIFY-ANY-",
+        "page": 19,
+        "section_type": "cover",
+        "score": 0.3833,
+        "text": "against loss, damage and liability as defined in this Policy arising in connection with the vehicle insured"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E13",
+    "query": "Find conditions related to a valid driving licence.",
+    "expected_section_type": "condition",
+    "results": [
+      {
+        "clause_id": "C",
+        "page": 5,
+        "section_type": "cover",
+        "score": 0.4011,
+        "text": "c. The Owner-Driver holds an effective driving license, in accordance with the provisions of Rule 3 of the Central Motor Vehicles Rules, 1989, at the time of the accident"
+      },
+      {
+        "clause_id": "MAINTAIN-IT-IN-EFFICIENT-CONDITION-AND-THE-COMPANY-SHALL-HAVE-AT-ALL-T",
+        "page": 6,
+        "section_type": "condition",
+        "score": 0.3178,
+        "text": "examine the Vehicle or any part thereof or any driver or employee of the Insured. In the event of any"
+      },
+      {
+        "clause_id": "3-IN-TERMS-OF-AND-SUBJECT-TO-THE-LIMITATIONS-OF-THE-INDEMNITY-GRANTED-",
+        "page": 3,
+        "section_type": "limitation",
+        "score": 0.2843,
+        "text": "the Company will indemnify any driver who is driving the vehicle on the Insured’s order or with Insured’s permission provided that such driver shall as though he/she was the Insured observe Policy Wording_ Future Secure Two Wheeler Package Policy_Version.2.0. UIN: IRDAN132RP0016V01200708 4 fulfill and be subject to the terms exceptions and conditions of this Policy in so far as they apply."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E14",
+    "query": "Find wording about the vehicle being used outside permitted purposes.",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "WHILE-THE-VEHICLE-IS-BEING-USED-ELSEWHERE-THAN-IN-THE-INSURED-S-PREMIS",
+        "page": 12,
+        "section_type": "cover",
+        "score": 0.5348,
+        "text": "specifically required for a mission to fight a fire. For the purposes of this endorsement ‘Use confined to own premises’ shall mean use only on insured’s premises to which public have no general right of access. IMT 15. PERSONAL ACCIDENT COVER TO THE INSURED OR ANY NAMED PERSON"
+      },
+      {
+        "clause_id": "MAINTAIN-IT-IN-EFFICIENT-CONDITION-AND-THE-COMPANY-SHALL-HAVE-AT-ALL-T",
+        "page": 6,
+        "section_type": "condition",
+        "score": 0.4703,
+        "text": "examine the Vehicle or any part thereof or any driver or employee of the Insured. In the event of any"
+      },
+      {
+        "clause_id": "NOTWITHSTANDING-ANYTHING-TO-THE-CONTRARY-CONTAINED-HEREIN-IT-IS-HEREBY",
+        "page": 11,
+        "section_type": "general",
+        "score": 0.4375,
+        "text": "from ….. / ….. /….. the vehicle no. ………… insured hereunder is laid up in garage and not in use and"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E15",
+    "query": "What does the document say about accessories fitted to the vehicle?",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "ACCESSORIES-OR-MAY-PAY-IN-CASH-THE-AMOUNT-OF-THE-LOSS-OR-DAMAGE-AND-TH",
+        "page": 6,
+        "section_type": "cover",
+        "score": 0.4445,
+        "text": "shall not exceed: a. For total loss / constructive total loss of the Vehicle -the Insured’s Declared Value (IDV) of the Vehicle (including accessories thereon) as specified in the Schedule less the value of the wreck."
+      },
+      {
+        "clause_id": "B",
+        "page": 6,
+        "section_type": "cover",
+        "score": 0.4196,
+        "text": "b. For partial losses, i.e. losses other than Total Loss/Constructive Total Loss of the Vehicle -actual"
+      },
+      {
+        "clause_id": "ARISING-OUT-OF-ONE-CAUSE-IN-CONNECTION-WITH-THE-VEHICLE-INSURED-IN-RES-2",
+        "page": 15,
+        "section_type": "limitation",
+        "score": 0.385,
+        "text": "provided under this policy. Subject otherwise to the terms conditions limitations and exceptions of this Policy. * To insert voluntary deductible amount opted by the insured under t ariff for Private car / tariff for motorised two wheeler. Policy Wording_ Future Secure Two Wheeler Package Policy_Version.2.0. UIN: IRDAN132RP0016V01200708 16 ** To insert appropriate amount relating to the voluntary deductible opted as per the provision of tariff for Private car / tariff for motorised two wheelers."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E16",
+    "query": "Find clauses with the phrase subject to.",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "THE-SUBJECT-OF-INDEMNITY-UNDER-THIS-POLICY-AND",
+        "page": 4,
+        "section_type": "general",
+        "score": 0.3047,
+        "text": "B. Undertake the defence of proceedings in any Court of Law in respect of any act or alleged"
+      },
+      {
+        "clause_id": "SHALL-AS-THOUGH-SUCH-REPRESENTATIVE-WAS-THE-INSURED-OBSERVE-FULFILL-AN",
+        "page": 4,
+        "section_type": "condition",
+        "score": 0.2562,
+        "text": "exceptions and conditions of this Policy in so far as they apply."
+      },
+      {
+        "clause_id": "ARISING-OUT-OF-ONE-CAUSE-IN-CONNECTION-WITH-THE-VEHICLE-INSURED-IN-RES",
+        "page": 15,
+        "section_type": "limitation",
+        "score": 0.2561,
+        "text": "provided under this policy. Subject otherwise to the terms conditions limitations and exceptions of this Policy. * (i) to insert amount as appropriate to the class of vehicle insured as per GR.40 of the tariff."
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E17",
+    "query": "Find the definition of insured or insured vehicle.",
+    "expected_section_type": "definition",
+    "results": [
+      {
+        "clause_id": "3-THE-INSURED-SHALL-GIVE-THE-COMPANY-EVERY-ASSISTANCE-TO-SEE-THAT-SUCH",
+        "page": 2,
+        "section_type": "general",
+        "score": 0.6412,
+        "text": "charges are reasonable. SUM INSURED -INSURED’S DECLARED VALUE (IDV) The Insured’s Declared Value (IDV) of the vehicle will be deemed to be the ‘SUM INSURED’ for the"
+      },
+      {
+        "clause_id": "THE-VEHICLE-INSURED-BEING-SPECIALLY-DESIGNED-MODIFIED-FOR-USE-OF-BLIND",
+        "page": 11,
+        "section_type": "limitation",
+        "score": 0.6208,
+        "text": "challenged persons and suitable endorsement to this e ffect having been incorporated in the Registration Book by the Registering Authority, a discount of 50% on the Own Damage premium for the vehicle insured is hereby allowed to the insured. Subject otherwise to the terms exceptions conditions and limitations of the policy. IMT.13 .USE OF VEHICLE WITHIN INSURED’S OWN PREMISES (Applicable to all classes"
+      },
+      {
+        "clause_id": "ALL-SUMS-WHICH-THE-INSURED-SHALL-BECOME-LEGALLY-LIABLE-TO-PAY-IN-RESPE",
+        "page": 3,
+        "section_type": "general",
+        "score": 0.6199,
+        "text": "a. Death of or bodily injury to any person including occupants carried in the insured Vehicle (provided such occupants are not carried for hire or reward) but except so far as it is necessary"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E18",
+    "query": "What limits or depreciation percentages apply to total loss?",
+    "expected_section_type": "limitation",
+    "results": [
+      {
+        "clause_id": "THE-SCHEDULE-OF-AG-E-WISE-DEPRECIATION-AS-SHOWN-BELOW-IS-APPLICABLE-FO",
+        "page": 3,
+        "section_type": "limitation",
+        "score": 0.5568,
+        "text": "Loss/Constructive Total Loss (TL/CTL) claims only."
+      },
+      {
+        "clause_id": "5-RATE-OF-DEPRECIATION-FOR-PAINTING-IN-THE-CASE-OF-PAINTING-THE-DEPREC",
+        "page": 2,
+        "section_type": "limitation",
+        "score": 0.5168,
+        "text": "applied only on the material cost of total painting charges. In case of a consolidated bill for painting charges the material component shall be considered as 25% of the total painting charges for the purpose of applying the depreciation. The Company shall not be liable to make any payment in respect of:"
+      },
+      {
+        "clause_id": "4-RATE-OF-DEPRECIATION-FOR-ALL-OTHER-PARTS-INCLUDING-WOODEN-PARTS-WILL",
+        "page": 2,
+        "section_type": "limitation",
+        "score": 0.5105,
+        "text": "Policy Wording_ Future Secure Two Wheeler Package Policy_Version.2.0. UIN: IRDAN132RP0016V01200708 2 AGE OF VEHICLE % OF DEPRECIATION Not exceeding 6months Nil Exceeding 6months but not exceeding 1 year 5% Exceeding 1 year but not exceeding 2 years 10% Exceeding 2 years but not exceeding 3 years 15% Exceeding 3 years but not exceeding 4 years 25% Exceeding 4 years but not exceeding 5 years 35% Exceeding 5 years but not exceeding 10 years 40% Exceeding 10 years 50%"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E19",
+    "query": "Find the procedure for inspection or survey after damage.",
+    "expected_section_type": "procedure",
+    "results": [
+      {
+        "clause_id": "OR-LOSS-OR-DAMAGE-AND-IN-THE-EVENT-OF-ANY-CLAIM-AND-THEREAFTER-THE-INS",
+        "page": 6,
+        "section_type": "general",
+        "score": 0.3838,
+        "text": "information and assistance as the Company shall require. Every letter claim writ summons and/or process or copy thereof shall be forwarded to the Company immediately on receipt by the Insured."
+      },
+      {
+        "clause_id": "MAINTAIN-IT-IN-EFFICIENT-CONDITION-AND-THE-COMPANY-SHALL-HAVE-AT-ALL-T",
+        "page": 6,
+        "section_type": "condition",
+        "score": 0.371,
+        "text": "examine the Vehicle or any part thereof or any driver or employee of the Insured. In the event of any"
+      },
+      {
+        "clause_id": "THE-INSURED-MAY-AUTHORISE-THE-REPAIR-OF-THE-VEHICLE-NECESSITATED-BY-DA",
+        "page": 2,
+        "section_type": "general",
+        "score": 0.3554,
+        "text": "may be liable under this Policy provided that:-"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E20",
+    "query": "Search for cancellation or termination conditions.",
+    "expected_section_type": "condition",
+    "results": [
+      {
+        "clause_id": "1",
+        "page": 19,
+        "section_type": "condition",
+        "score": 0.4515,
+        "text": "(1) for any loss, damage or liability due to or arising from theft or conversion by the Hirer unless covered by payment of additional premium @ 1.50% on IDV. (Endt. IMT 43 is to be used.)"
+      },
+      {
+        "clause_id": "3-5",
+        "page": 19,
+        "section_type": "condition",
+        "score": 0.3897,
+        "text": "(3) If the vehicle is used by the Hirer for carriage of passengers for hire or reward. * For the purposes of this endorsement the insurer will in terms of and subject to the provisions"
+      },
+      {
+        "clause_id": "CANCELLED-NOR-HAD-SPECIAL-CONDITIONS-IMPOSED-NOR-HAD-INCREASED-PREMIUM",
+        "page": 19,
+        "section_type": "condition",
+        "score": 0.358,
+        "text": "him/her by reason of claims experience. It is also understood and agreed that whilst the vehicle insured is let on hire to the Hirer the insurer shall not be liable –"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E21",
+    "query": "What does the policy say about geographical area?",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "AGREED-THAT-NOTWITHSTANDING-ANYTHING-CON-TAINED-IN-THIS-POLICY-TO-THE-",
+        "page": 8,
+        "section_type": "general",
+        "score": 0.5773,
+        "text": "in this Policy shall from the . . ./ . ./ . . . . to the . …/. . /. . . .(both days inclusive) be deemed to include *"
+      },
+      {
+        "clause_id": "ENDORSEMENTS",
+        "page": 8,
+        "section_type": "general",
+        "score": 0.3679,
+        "text": "(Attached to and forming part of policy) IMT. 1. Extension of Geographical Area In consideration of the payment of an additional premium of Rs. ……….it is hereby understood and"
+      },
+      {
+        "clause_id": "IT-IS-FURTHER-SPECIFICALLY-UNDERSTOOD-AND-AGREED-THAT-SUCH-GEOGRAP-HIC",
+        "page": 8,
+        "section_type": "limitation",
+        "score": 0.3612,
+        "text": "damage to the vehicle insured / injury to its occupants / third party liability in respect of the vehicle insured during sea voyage / air passage for the purpose of ferrying the vehicle insured to the extended geographical area. Subject otherwise to the terms exceptions conditions and limitations of this Policy. NOTE: - Insert Nepal/ Sri Lanka/ Maldives/ Bhutan/ Pakistan/Bangladesh as the case may be. IMT. 3. TRANSFER OF INTEREST It is hereby understood and agreed that as from …/…/……. the intere"
+      }
+    ],
+    "error": null
+  },
+  {
+    "id": "E22",
+    "query": "Find any clause that modifies or limits another cover provision.",
+    "expected_section_type": null,
+    "results": [
+      {
+        "clause_id": "INCURRED-OF-ANY-EXPENDITURE-FOR-WHICH-PROVISION-HAS-BEEN-MADE-UNDER-TH",
+        "page": 15,
+        "section_type": "condition",
+        "score": 0.3717,
+        "text": "expenditure by the insurer in the exercise of his discretion under Condition no …** of this policy . If the expenditure incurred by the insurer shall include any amount for which the insured is responsible hereunder such amount shall be repaid by the insured to the insurer forthwith. For the purpose of this Endorsement the expression \"event” shall mean an event or series of even ts"
+      },
+      {
+        "clause_id": "SCHEDULE-WHILST-IT-THESE-IS-ARE-FITTED-IN-OR-ON-THE-VEHICLE-INSURED-WH",
+        "page": 16,
+        "section_type": "cover",
+        "score": 0.3651,
+        "text": "occasioned by any of the perils mentioned in Section.1 of the policy. The insurer shall, however, not be liable for loss of or damage to such fitting(s) caused by/as a result of mechanical or electrical breakdown. Provided always that the liability of the insurer hereunder shall not exceed the Insured's Declared Value (IDV) of the item. Subject otherwise to the terms conditions limitations and exceptions of this Policy. IMT.25. CNG/ LPG KIT IN BI-FUEL SYSTEM (Own Damage cover for the kit ) In co"
+      },
+      {
+        "clause_id": "CLAIM-BONUS-IF-ANY-SHALL-BE-CALCULATED-ON-THE-NEXT-RENEWAL-PREMIUM-AFT",
+        "page": 10,
+        "section_type": "limitation",
+        "score": 0.3546,
+        "text": "sum. b) # The period of insurance by this policy is extended to.…./…../……. in view of the payment of an additional premium of Rs ……….** Subject otherwise to the terms exceptions conditions and limitations of this policy. NB.1. # To delete (a) or (b) as per option exercised by the insured. NB.2. * The proportionate full policy premium for the period of lay up less the proportionate premium for the Fire and /or Theft risks for the lay up periods is to be inserted. NB.3 ** The proportionate premium"
+      }
+    ],
+    "error": null
+  }
+]
