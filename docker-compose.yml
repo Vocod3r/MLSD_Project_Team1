@@ -1,0 +1,51 @@
+# docker compose up --build            -> http://localhost:8000
+# docker compose up --build --scale worker=3
+
+services:
+  redis:
+    image: redis:7.4-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      STORE_BACKEND: redis
+      QUEUE_BACKEND: rq
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    build: .
+    command: ["python", "-m", "app.rq_worker"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      STORE_BACKEND: redis
+      REDIS_URL: redis://redis:6379/0
+      RUNS_DIR: /srv/runs
+    volumes:
+      - runs:/srv/runs
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  runs:

@@ -1,0 +1,8 @@
+.env
+.git
+runs/
+**/__pycache__
+.ipynb_checkpoints
+notebooks/
+index/
+.venv/
