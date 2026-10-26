@@ -30,6 +30,15 @@ from pydantic import BaseModel, Field
 
 from app.schemas import validate_fnol
 from app.store import RUN_TTL_S, STORE
+from app.metrics import (
+    metrics_endpoint,
+    HTTP_REQUESTS_TOTAL,
+    HTTP_REQUEST_DURATION_SECONDS,
+    CLAIMS_SUBMITTED_TOTAL,
+    RUN_CACHE_HITS_TOTAL,
+    RUN_CACHE_MISSES_TOTAL,
+    RATE_LIMIT_EXCEEDED_TOTAL,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 QUEUE_BACKEND = os.getenv("QUEUE_BACKEND", "inline")      # inline | rq
@@ -84,10 +93,14 @@ async def correlation_and_access_log(request: Request, call_next):
     request.state.cid = cid
     t0 = time.perf_counter()
     resp = await call_next(request)
+    elapsed = time.perf_counter() - t0
     resp.headers["X-Correlation-ID"] = cid
-    if not request.url.path.startswith(("/health", "/runs/")) or resp.status_code >= 400:
-        log.info("request", extra={"correlation_id": cid, "path": f"{request.method} {request.url.path}",
-                                   "code": resp.status_code, "ms": round((time.perf_counter() - t0) * 1000, 1)})
+    path = request.url.path
+    HTTP_REQUESTS_TOTAL.labels(method=request.method, endpoint=path, status_code=str(resp.status_code)).inc()
+    HTTP_REQUEST_DURATION_SECONDS.labels(endpoint=path).observe(elapsed)
+    if not path.startswith(("/health", "/runs/")) or resp.status_code >= 400:
+        log.info("request", extra={"correlation_id": cid, "path": f"{request.method} {path}",
+                                   "code": resp.status_code, "ms": round(elapsed * 1000, 1)})
     return resp
 
 
@@ -102,11 +115,13 @@ def _client_id(request: Request):
 @app.post("/claims")
 async def submit_claim(request: Request):
     cid = request.state.cid
+    client_id = _client_id(request)
 
     # D7: per-client rate limit (fixed one-minute window)
     if RATE_LIMIT_PER_MIN > 0:
-        n = STORE.incr(f"rl:{_client_id(request)}:{int(time.time() // 60)}", ttl=70)
+        n = STORE.incr(f"rl:{client_id}:{int(time.time() // 60)}", ttl=70)
         if n > RATE_LIMIT_PER_MIN:
+            RATE_LIMIT_EXCEEDED_TOTAL.labels(client=client_id).inc()
             return JSONResponse({"detail": f"rate limit of {RATE_LIMIT_PER_MIN}/min exceeded"}, status_code=429,
                                 headers={"Retry-After": str(60 - int(time.time()) % 60)})
 
@@ -120,24 +135,31 @@ async def submit_claim(request: Request):
         fnol, errors = validate_fnol(payload)
 
     if errors:
+        channel = payload.get("channel", "unknown") if isinstance(payload, dict) else "unknown"
+        CLAIMS_SUBMITTED_TOTAL.labels(channel=channel, status="quarantined").inc()
         qid = "q_" + uuid.uuid4().hex[:12]
         STORE.set_json(f"quarantine:{qid}", {"quarantine_id": qid, "received_at": _now(), "correlation_id": cid,
-                                             "client": _client_id(request), "errors": errors, "payload": payload},
+                                             "client": client_id, "errors": errors, "payload": payload},
                        ttl=RUN_TTL_S)
         STORE.push("quarantine:recent", {"quarantine_id": qid, "received_at": _now(), "errors": errors})
         log.info("quarantined", extra={"correlation_id": cid, "quarantine_id": qid})
         return JSONResponse({"quarantine_id": qid, "errors": errors}, status_code=422)
 
+    channel = fnol.get("channel", "unknown")
     # D7: identical FNOL recently completed -> return that run instead of running the agents again
     fp = hashlib.sha256(json.dumps(fnol, sort_keys=True).encode()).hexdigest()
     if RUN_CACHE_TTL_S > 0:
         cached = STORE.get_json(f"runcache:{fp}")
         prev = cached and STORE.get_json(f"run:{cached}")
         if prev and prev.get("status") in ("completed", "escalated"):
+            RUN_CACHE_HITS_TOTAL.inc()
+            CLAIMS_SUBMITTED_TOTAL.labels(channel=channel, status="cached").inc()
             log.info("cache hit", extra={"correlation_id": cid, "run_id": cached, "cache": "hit"})
             return JSONResponse({"run_id": cached, "status": prev["status"], "poll_url": f"/runs/{cached}",
                                  "cached": True}, status_code=200, headers={"X-Cache": "HIT"})
 
+    RUN_CACHE_MISSES_TOTAL.inc()
+    CLAIMS_SUBMITTED_TOTAL.labels(channel=channel, status="queued").inc()
     run_id = "run_" + uuid.uuid4().hex[:12]
     STORE.set_json(f"run:{run_id}", {"run_id": run_id, "status": "queued", "created_at": _now(),
                                      "correlation_id": cid, "fnol": fnol, "steps": []}, ttl=RUN_TTL_S)
@@ -211,6 +233,11 @@ def health():
         return JSONResponse({"status": "unhealthy", "store": str(e)}, status_code=503)
     return {"status": "ok" if ok else "unhealthy", "queue": QUEUE_BACKEND,
             "store": os.getenv("STORE_BACKEND", "memory")}
+
+
+@app.get("/metrics")
+def metrics():
+    return metrics_endpoint()
 
 
 # web client last, so it never shadows an API route

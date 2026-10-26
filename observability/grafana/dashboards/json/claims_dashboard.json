@@ -1,0 +1,80 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Ingestion Throughput (RPS)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(rate(claims_http_requests_total[1m])) by (endpoint)",
+          "legendFormat": "{{endpoint}}"
+        }
+      ]
+    },
+    {
+      "title": "Ingestion Latency p50 & p95",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(claims_http_request_duration_seconds_bucket[1m])) by (le))",
+          "legendFormat": "p95 latency"
+        },
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(claims_http_request_duration_seconds_bucket[1m])) by (le))",
+          "legendFormat": "p50 latency"
+        }
+      ]
+    },
+    {
+      "title": "Cache Hit Ratio (D7)",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(claims_cache_hits_total) / (sum(claims_cache_hits_total) + sum(claims_cache_misses_total)) * 100",
+          "legendFormat": "Hit Rate %"
+        }
+      ]
+    },
+    {
+      "title": "Submissions by Status (Queued vs Quarantined vs Cached)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        {
+          "expr": "sum(rate(claims_submitted_total[1m])) by (status)",
+          "legendFormat": "{{status}}"
+        }
+      ]
+    },
+    {
+      "title": "Rate Limit Exceeded Rejections (429)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        {
+          "expr": "sum(rate(claims_rate_limit_exceeded_total[1m]))",
+          "legendFormat": "Rate Limited (429)"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["motor-claims", "triage"],
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Motor Claim Ingestion & Triage Dashboard",
+  "uid": "claims_overview",
+  "version": 1
+}
