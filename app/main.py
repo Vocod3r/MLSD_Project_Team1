@@ -58,7 +58,24 @@ class JsonFormatter(logging.Formatter):
         return json.dumps(out)
 
 
-_h = logging.StreamHandler(sys.stdout)
+class SafeStreamHandler(logging.StreamHandler):
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            stream = self.stream
+            stream.write(msg + self.terminator)
+            self.flush()
+        except (ValueError, OSError):
+            pass
+
+    def handleError(self, record):
+        t, v, tb = sys.exc_info()
+        if isinstance(v, (ValueError, OSError)):
+            return
+        super().handleError(record)
+
+
+_h = SafeStreamHandler(sys.stdout)
 _h.setFormatter(JsonFormatter())
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), handlers=[_h], force=True)
 log = logging.getLogger("api")

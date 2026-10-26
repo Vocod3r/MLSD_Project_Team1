@@ -2,9 +2,36 @@
 
 from __future__ import annotations
 
-import time
-from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
 from fastapi import Response
+
+try:
+    from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
+    PROMETHEUS_AVAILABLE = True
+except ImportError:
+    PROMETHEUS_AVAILABLE = False
+    CONTENT_TYPE_LATEST = "text/plain; version=0.0.4; charset=utf-8"
+
+    class _DummyMetric:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def labels(self, *args, **kwargs):
+            return self
+
+        def inc(self, amount=1):
+            pass
+
+        def observe(self, amount):
+            pass
+
+        def set(self, value):
+            pass
+
+    Counter = Histogram = Gauge = _DummyMetric
+
+    def generate_latest():
+        return b"# prometheus_client not installed in this environment\nclaims_http_requests_total 0\n"
+
 
 # HTTP metrics
 HTTP_REQUESTS_TOTAL = Counter(
