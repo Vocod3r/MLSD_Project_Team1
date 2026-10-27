@@ -1,0 +1,119 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "policy_number": {
+      "maxLength": 40,
+      "minLength": 5,
+      "title": "Policy Number",
+      "type": "string"
+    },
+    "insured_name": {
+      "maxLength": 100,
+      "minLength": 2,
+      "title": "Insured Name",
+      "type": "string"
+    },
+    "vehicle_registration": {
+      "maxLength": 15,
+      "minLength": 4,
+      "title": "Vehicle Registration",
+      "type": "string"
+    },
+    "channel": {
+      "enum": [
+        "web",
+        "app",
+        "call_centre"
+      ],
+      "title": "Channel",
+      "type": "string"
+    },
+    "date_of_loss": {
+      "format": "date",
+      "title": "Date Of Loss",
+      "type": "string"
+    },
+    "date_of_report": {
+      "format": "date",
+      "title": "Date Of Report",
+      "type": "string"
+    },
+    "place_of_loss": {
+      "maxLength": 200,
+      "minLength": 2,
+      "title": "Place Of Loss",
+      "type": "string"
+    },
+    "estimated_loss_inr": {
+      "maximum": 50000000,
+      "minimum": 0,
+      "title": "Estimated Loss Inr",
+      "type": "number"
+    },
+    "description": {
+      "maxLength": 5000,
+      "minLength": 15,
+      "title": "Description",
+      "type": "string"
+    },
+    "garage_name": {
+      "anyOf": [
+        {
+          "maxLength": 120,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Garage Name"
+    },
+    "fir_number": {
+      "anyOf": [
+        {
+          "maxLength": 60,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fir Number"
+    },
+    "cashless_requested": {
+      "default": false,
+      "title": "Cashless Requested",
+      "type": "boolean"
+    },
+    "third_party_involved": {
+      "default": false,
+      "title": "Third Party Involved",
+      "type": "boolean"
+    },
+    "injuries": {
+      "default": false,
+      "title": "Injuries",
+      "type": "boolean"
+    },
+    "police_report_filed": {
+      "default": false,
+      "title": "Police Report Filed",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "policy_number",
+    "insured_name",
+    "vehicle_registration",
+    "channel",
+    "date_of_loss",
+    "date_of_report",
+    "place_of_loss",
+    "estimated_loss_inr",
+    "description"
+  ],
+  "title": "FNOL",
+  "type": "object"
+}
