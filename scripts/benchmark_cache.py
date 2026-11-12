@@ -3,10 +3,12 @@
 import time
 import statistics
 import datetime as dt
+import os
 from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+os.environ["RATE_LIMIT_PER_MIN"] = "0"  # benchmark many local requests without a source-IP throttle
 
 from fastapi.testclient import TestClient
 from app.main import app
@@ -47,10 +49,9 @@ def main():
 
     for i in range(num_samples):
         payload = make_payload(i)
-        headers = {"X-Client-Id": f"client_bench_uncached_{i}"}
 
         t0 = time.perf_counter()
-        resp = client.post("/claims", json=payload, headers=headers)
+        resp = client.post("/claims", json=payload)
         dt_ms = (time.perf_counter() - t0) * 1000
         assert resp.status_code == 202
         uncached_latencies.append(dt_ms)
@@ -76,10 +77,9 @@ def main():
 
     for i in range(num_samples):
         payload = make_payload(i)
-        headers = {"X-Client-Id": f"client_bench_cached_{i}"}
 
         t0 = time.perf_counter()
-        resp = client.post("/claims", json=payload, headers=headers)
+        resp = client.post("/claims", json=payload)
         dt_ms = (time.perf_counter() - t0) * 1000
         assert resp.status_code == 200
         assert resp.headers.get("X-Cache") == "HIT"

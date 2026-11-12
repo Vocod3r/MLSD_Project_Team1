@@ -18,11 +18,45 @@ class MemoryStore:
 
     def set_json(self, key, value, ttl=None):
         with self._lock:
-            self._kv[key] = json.dumps(value, default=str)
+            expires = time.monotonic() + ttl if ttl is not None else None
+            self._kv[key] = (json.dumps(value, default=str), expires)
+
+    def _get_json_locked(self, key):
+        entry = self._kv.get(key)
+        if entry is None:
+            return None
+        raw, expires = entry
+        if expires is not None and time.monotonic() >= expires:
+            del self._kv[key]
+            return None
+        return json.loads(raw)
 
     def get_json(self, key):
-        v = self._kv.get(key)
-        return json.loads(v) if v else None
+        with self._lock:
+            return self._get_json_locked(key)
+
+    def create_run_if_absent(self, cache_key, run_key, run_id, record, cache_ttl, run_ttl):
+        with self._lock:
+            if self._get_json_locked(cache_key) is not None:
+                return False
+            self._kv[cache_key] = (json.dumps(run_id), time.monotonic() + cache_ttl)
+            self._kv[run_key] = (json.dumps(record, default=str), time.monotonic() + run_ttl)
+            return True
+
+    def replace_run_if_value(self, cache_key, expected, run_key, run_id, record, cache_ttl, run_ttl):
+        with self._lock:
+            if self._get_json_locked(cache_key) != expected:
+                return False
+            self._kv[cache_key] = (json.dumps(run_id), time.monotonic() + cache_ttl)
+            self._kv[run_key] = (json.dumps(record, default=str), time.monotonic() + run_ttl)
+            return True
+
+    def delete_json_if_value(self, key, expected):
+        with self._lock:
+            if self._get_json_locked(key) != expected:
+                return False
+            self._kv.pop(key, None)
+            return True
 
     def push(self, key, value, max_len=1000):
         with self._lock:
@@ -56,6 +90,30 @@ class RedisStore:
     def get_json(self, key):
         v = self.r.get(key)
         return json.loads(v) if v else None
+
+    def create_run_if_absent(self, cache_key, run_key, run_id, record, cache_ttl, run_ttl):
+        script = """
+        if redis.call('EXISTS', KEYS[1]) == 1 then return 0 end
+        redis.call('SET', KEYS[1], ARGV[1], 'EX', ARGV[3])
+        redis.call('SET', KEYS[2], ARGV[2], 'EX', ARGV[4])
+        return 1
+        """
+        return bool(self.r.eval(script, 2, cache_key, run_key, json.dumps(run_id),
+                                json.dumps(record, default=str), int(cache_ttl), int(run_ttl)))
+
+    def replace_run_if_value(self, cache_key, expected, run_key, run_id, record, cache_ttl, run_ttl):
+        script = """
+        if redis.call('GET', KEYS[1]) ~= ARGV[1] then return 0 end
+        redis.call('SET', KEYS[1], ARGV[2], 'EX', ARGV[4])
+        redis.call('SET', KEYS[2], ARGV[3], 'EX', ARGV[5])
+        return 1
+        """
+        return bool(self.r.eval(script, 2, cache_key, run_key, json.dumps(expected), json.dumps(run_id),
+                                json.dumps(record, default=str), int(cache_ttl), int(run_ttl)))
+
+    def delete_json_if_value(self, key, expected):
+        script = "if redis.call('GET', KEYS[1]) == ARGV[1] then return redis.call('DEL', KEYS[1]) else return 0 end"
+        return bool(self.r.eval(script, 1, key, json.dumps(expected)))
 
     def push(self, key, value, max_len=1000):
         p = self.r.pipeline()

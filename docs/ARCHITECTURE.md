@@ -26,7 +26,7 @@ graph TD
 ### Boundary Justifications
 
 1. **API Service (`api`) vs. Agent Workers (`worker`)**:
-   - **Resource Profile**: The API tier is CPU-light and I/O-bound (validates schemas, enforces rate limits, queries in-memory keys, serves static HTML). Agent workers are CPU- and memory-intensive (load sentence-transformer embedding models, FAISS vector indices, and execute LangGraph reasoning loops).
+   - **Resource Profile**: The API tier is CPU-light and I/O-bound (validates schemas, enforces rate limits, queries Redis, serves static HTML). Agent workers load the MiniLM embedding model and FAISS policy index when configured, then execute LangGraph reasoning loops.
    - **Independent Scaling (A7)**: Intake traffic fluctuates independently of claim complexity. Under burst traffic, workers can be independently scaled (`docker compose up --scale worker=3`) without restarting or multiplying API servers.
    - **Failure Isolation**: An unhandled exception or Out-Of-Memory (OOM) crash inside an agent reasoning loop never takes down the ingestion boundary. Customers can continue submitting claims and polling status.
 

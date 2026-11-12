@@ -1,8 +1,10 @@
 .env
+secrets/
 .git
 runs/
 **/__pycache__
 .ipynb_checkpoints
 notebooks/
 index/
+data/policies/
 .venv/

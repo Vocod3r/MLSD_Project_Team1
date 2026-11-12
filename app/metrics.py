@@ -64,8 +64,7 @@ RUN_CACHE_MISSES_TOTAL = Counter(
 )
 RATE_LIMIT_EXCEEDED_TOTAL = Counter(
     "claims_rate_limit_exceeded_total",
-    "Total requests rejected by per-client rate limiting (D7)",
-    ["client"],
+    "Total requests rejected by source-IP rate limiting (D7)",
 )
 
 # Agent performance & execution metrics (A6)
@@ -115,8 +114,21 @@ def emit_run_metrics(record: dict) -> None:
     """
     steps = record.get("steps") or []
     result = record.get("result") or {}
+    known_agents = {"guardrail", "triage", "coverage", "verifier", "router", "finalize", "system"}
+    decision_actions = {"decide:finish", "decide:search_corpus", "decide:get_clause", "decide:get_fnol_field",
+                        "decide:other"}
+    known_actions = {"check_input", "classify_and_extract", "verify", "provider_unavailable", "tool_call",
+                     "route", "assemble_result"} | decision_actions
     for s in steps:
         agent, action = s.get("agent", "unknown"), s.get("action", "unknown")
+        agent = agent if isinstance(agent, str) and agent in known_agents else "other"
+        # The model's proposed action is included in step text; never use that free text as a metric label.
+        if not isinstance(action, str):
+            action = "other"
+        elif action.startswith("decide:") and action not in decision_actions:
+            action = "decide:other"
+        elif action not in known_actions:
+            action = "other"
         AGENT_STEP_DURATION_SECONDS.labels(agent=agent, action=action).observe((s.get("latency_ms") or 0) / 1000)
         if s.get("prompt_version"):
             pv = s["prompt_version"]

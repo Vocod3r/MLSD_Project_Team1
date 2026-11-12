@@ -10,7 +10,7 @@ In this project, our service processes motor insurance claims using AI agents.
 Your role (**Person A**) is the **Gatekeeper, Queue Manager, and Operations Engineer**:
 * **The Gatekeeper:** You validate incoming FNOL (First Notice of Loss) claims against strict data contracts and quarantine invalid ones with field-level errors. You ensure malformed requests **never** start an agent run.
 * **The Queue Manager:** Since AI agents take 10–15 seconds to reason, you respond to the client immediately with an HTTP `202 Accepted` and a `run_id`, dropping the task into a background Redis queue for workers to process.
-* **The Cost Controller:** You prevent abuse and save money by enforcing per-client rate limiting (30 req/min) and SHA-256 run caching for duplicate claims.
+* **The Cost Controller:** You prevent abuse and save money by enforcing source-IP rate limiting (30 req/min) and SHA-256 run caching for duplicate claims.
 * **The Operations Engineer:** You build the local observability stack (Prometheus metrics, OpenTelemetry tracing to Jaeger, and Grafana dashboards) and package the system into a multi-service Docker Compose architecture.
 
 ---
@@ -40,7 +40,7 @@ python -m pytest tests/ -v
      - `POST /claims` returns `202 Accepted` with `run_id` and `poll_url`.
      - `GET /runs/{id}` returns run status and steps.
      - `POST /runs/{id}/feedback` records user feedback.
-     - Rate limiter blocks requests beyond 30/min with HTTP `429` and `Retry-After`.
+     - Rate limiter blocks requests from one source IP beyond 30/min with HTTP `429` and `Retry-After`.
      - Caching returns HTTP `200` with `X-Cache: HIT` and `cached: true` for duplicate submissions.
 * **What it proves to the evaluator:**
   Proves that all code is fully functional, robust against edge cases, and satisfies requirements **F1, F2, D1, A4, D7, and L6**.
@@ -116,8 +116,8 @@ http://localhost:3000
 
 #### Step 3: Log In
 * **Username:** `admin`
-* **Password:** `admin`
-*(If prompted to change your password, click **Skip** or set a new password).*
+* **Password:** the value in `secrets/grafana_admin_password.txt`.
+Create this file from `secrets/grafana_admin_password.example` before starting the Compose stack.
 
 #### Step 4: Open the Pre-Configured Dashboard
 1. In the left navigation sidebar, click on **Dashboards** (or the four-squares icon).

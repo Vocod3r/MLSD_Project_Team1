@@ -11,6 +11,9 @@ from app.store import STORE, MemoryStore
 
 @pytest.fixture
 def client():
+    if isinstance(STORE, MemoryStore):
+        with STORE._lock:
+            STORE._counters.clear()
     return TestClient(app)
 
 
@@ -87,16 +90,13 @@ def test_get_run_lifecycle_and_feedback(client, sample_fnol):
     assert summary["total"] >= 1
 
 
-def test_per_client_rate_limiting(client, sample_fnol):
-    client_id = f"client_rate_test_{time.time()}"
-    headers = {"X-Client-Id": client_id}
-
-    # Default RATE_LIMIT_PER_MIN is 30. Sending 35 requests should trigger 429
+def test_source_ip_rate_limiting_ignores_client_supplied_ids(client, sample_fnol):
+    # Rate limits use the transport peer address; client-supplied IDs cannot evade the limit.
     hit_429 = False
     for i in range(35):
         # vary policy number slightly to avoid caching
         payload = dict(sample_fnol, policy_number=f"POL-RL-{i}-{time.time()}")
-        resp = client.post("/claims", json=payload, headers=headers)
+        resp = client.post("/claims", json=payload, headers={"X-Client-Id": f"spoof-{i}"})
         if resp.status_code == 429:
             hit_429 = True
             assert "Retry-After" in resp.headers
@@ -107,11 +107,8 @@ def test_per_client_rate_limiting(client, sample_fnol):
 
 
 def test_run_caching_returns_200_cache_hit(client, sample_fnol):
-    # Unique client to avoid rate limits
-    headers = {"X-Client-Id": f"client_cache_test_{time.time()}"}
-
     # 1. First submission (enqueued)
-    resp1 = client.post("/claims", json=sample_fnol, headers=headers)
+    resp1 = client.post("/claims", json=sample_fnol)
     assert resp1.status_code == 202
     run_id1 = resp1.json()["run_id"]
 
@@ -121,7 +118,7 @@ def test_run_caching_returns_200_cache_hit(client, sample_fnol):
     STORE.set_json(f"run:{run_id1}", run_data)
 
     # 2. Second submission with IDENTICAL payload
-    resp2 = client.post("/claims", json=sample_fnol, headers=headers)
+    resp2 = client.post("/claims", json=sample_fnol)
     assert resp2.status_code == 200
     assert resp2.headers.get("X-Cache") == "HIT"
     body2 = resp2.json()
