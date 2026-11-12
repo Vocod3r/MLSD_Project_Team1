@@ -11,6 +11,8 @@ Before you start: `docs/SLO.md` must already be committed (the target has to exi
 pip install -r requirements-loadtest.txt              # locust, psutil, httpx (on the host, not in a container)
 cp .env.example .env                                  # the base stack reads this; the load test overrides the model with the stub
 cp .env.loadtest.example .env.loadtest                # stub delay (1.5 s +/- 0.3 s), stub endpoint, reference prices
+Copy-Item secrets/llm_api_key.example secrets/llm_api_key.txt  # base Compose stack requires the file; stub does not use its contents
+Copy-Item secrets/grafana_admin_password.example secrets/grafana_admin_password.txt
 ```
 
 ## 1. Start the stack with the stub in place of the model (A7: `--scale worker=3`)
@@ -22,6 +24,7 @@ docker compose --env-file .env.loadtest \
 
 Wait until `docker compose ps` shows every service `healthy` (api, redis, jaeger, llm-stub, 3 x worker). The overlay
 forces the workers onto the stub regardless of what `.env` says, so this cannot spend money on a real provider.
+It also disables the source-IP request limit by default (`LOADTEST_RATE_LIMIT_PER_MIN=0`) so simulated users can reach the worker-capacity measurements.
 
 Quick check: `curl localhost:8000/health` and `curl localhost:9000/health` (stub).
 
@@ -54,7 +57,7 @@ Files written: `docs/loadtest_results/w3_u<N>.json` (one per step), `w3_u<N>.csv
 - *The concurrency at which the target fails* = the first row with SLO met = NO.
 - *The component responsible* = whichever resource is saturated at that row. If worker/api/redis/stub CPU is low, memory is
   flat, and the queue depth is growing, the limit is **worker slots** (hypothesis in `docs/SLO.md`). If a container sits
-  near 100% CPU, that is your bottleneck: name it. You can also look at Grafana (http://localhost:3000, admin/admin).
+  near 100% CPU, that is your bottleneck: name it. You can also look at Grafana at http://localhost:3000 (password in `secrets/grafana_admin_password.txt`).
 - Throughput that stops rising while latency keeps rising is the signature of saturation.
 
 If you see `WARNING: --workers 3 but [n] worker container(s) were running`, your `--scale` and `--workers` disagree; fix
@@ -85,8 +88,8 @@ python scripts/demo_checks.py all             # demo items 7 and 8 (guardrails, 
 
 - The stub answers after a fixed delay, so this measures **your system**, not a provider. With a real provider the limit is
   usually the provider's rate limit: at 7 calls per run, R requests/min caps you at R/7 runs/min whatever the worker count.
-- Locust gives every simulated user a fresh client id and policy number, so the rate limiter and the run cache are **not**
-  exercised (that is deliberate; `scripts/benchmark_cache.py` measures caching).
+- The overlay disables source-IP rate limiting, and Locust gives each simulated user a fresh policy number, so caching is
+  **not** exercised (that is deliberate; `scripts/benchmark_cache.py` measures caching).
 - Run it on an otherwise idle machine; Docker Desktop's VM CPU/memory limits (Settings -> Resources) change the result.
 - Without `--docker` the script samples host processes instead (for running the API and workers by hand).
 

@@ -45,6 +45,7 @@ QUEUE_BACKEND = os.getenv("QUEUE_BACKEND", "inline")      # inline | rq
 RATE_LIMIT_PER_MIN = int(os.getenv("RATE_LIMIT_PER_MIN", "30"))
 RUN_CACHE_TTL_S = int(os.getenv("RUN_CACHE_TTL_S", "600"))  # 0 disables the run cache
 JOB_TIMEOUT_S = int(os.getenv("JOB_TIMEOUT_S", "180"))
+MAX_REQUEST_BYTES = int(os.getenv("MAX_REQUEST_BYTES", "65536"))
 
 
 # ---------- structured JSON logs with correlation id ----------
@@ -113,8 +114,11 @@ async def correlation_and_access_log(request: Request, call_next):
     elapsed = time.perf_counter() - t0
     resp.headers["X-Correlation-ID"] = cid
     path = request.url.path
-    HTTP_REQUESTS_TOTAL.labels(method=request.method, endpoint=path, status_code=str(resp.status_code)).inc()
-    HTTP_REQUEST_DURATION_SECONDS.labels(endpoint=path).observe(elapsed)
+    # Use the router's stable template (for example /runs/{run_id}), never user supplied IDs.
+    route = request.scope.get("route")
+    endpoint = getattr(route, "path", "/other")
+    HTTP_REQUESTS_TOTAL.labels(method=request.method, endpoint=endpoint, status_code=str(resp.status_code)).inc()
+    HTTP_REQUEST_DURATION_SECONDS.labels(endpoint=endpoint).observe(elapsed)
     if not path.startswith(("/health", "/runs/")) or resp.status_code >= 400:
         log.info("request", extra={"correlation_id": cid, "path": f"{request.method} {path}",
                                    "code": resp.status_code, "ms": round(elapsed * 1000, 1)})
@@ -126,7 +130,8 @@ def _now():
 
 
 def _client_id(request: Request):
-    return request.headers.get("X-Client-Id") or (request.client.host if request.client else "unknown")
+    # Client supplied identifiers are easy to rotate to evade limits; trust the transport peer only.
+    return request.client.host if request.client else "unknown"
 
 
 @app.post("/claims")
@@ -138,21 +143,38 @@ async def submit_claim(request: Request):
     if RATE_LIMIT_PER_MIN > 0:
         n = STORE.incr(f"rl:{client_id}:{int(time.time() // 60)}", ttl=70)
         if n > RATE_LIMIT_PER_MIN:
-            RATE_LIMIT_EXCEEDED_TOTAL.labels(client=client_id).inc()
+            RATE_LIMIT_EXCEEDED_TOTAL.inc()
             return JSONResponse({"detail": f"rate limit of {RATE_LIMIT_PER_MIN}/min exceeded"}, status_code=429,
                                 headers={"Retry-After": str(60 - int(time.time()) % 60)})
 
     # F2 / D1: validate at the boundary; anything invalid is quarantined, no run is created
-    raw = await request.body()
+    content_length = request.headers.get("content-length")
+    if content_length:
+        try:
+            if int(content_length) > MAX_REQUEST_BYTES:
+                return JSONResponse({"detail": f"request body exceeds {MAX_REQUEST_BYTES} bytes"}, status_code=413)
+        except ValueError:
+            return JSONResponse({"detail": "invalid Content-Length"}, status_code=400)
+    chunks, size = [], 0
+    async for chunk in request.stream():
+        size += len(chunk)
+        if size > MAX_REQUEST_BYTES:
+            return JSONResponse({"detail": f"request body exceeds {MAX_REQUEST_BYTES} bytes"}, status_code=413)
+        chunks.append(chunk)
+    raw = b"".join(chunks)
     try:
         payload = json.loads(raw or b"null")
     except json.JSONDecodeError as e:
         payload, errors = raw.decode("utf-8", "replace")[:5000], [{"field": "(body)", "message": f"invalid JSON: {e.msg}"}]
+    except UnicodeDecodeError:
+        payload, errors = raw.decode("utf-8", "replace")[:5000], [
+            {"field": "(body)", "message": "request body must be valid UTF-8 JSON"}]
     else:
         fnol, errors = validate_fnol(payload)
 
     if errors:
         channel = payload.get("channel", "unknown") if isinstance(payload, dict) else "unknown"
+        channel = channel if isinstance(channel, str) and channel in {"web", "app", "call_centre"} else "unknown"
         CLAIMS_SUBMITTED_TOTAL.labels(channel=channel, status="quarantined").inc()
         qid = "q_" + uuid.uuid4().hex[:12]
         STORE.set_json(f"quarantine:{qid}", {"quarantine_id": qid, "received_at": _now(), "correlation_id": cid,
@@ -165,24 +187,49 @@ async def submit_claim(request: Request):
     channel = fnol.get("channel", "unknown")
     # D7: identical FNOL recently completed -> return that run instead of running the agents again
     fp = hashlib.sha256(json.dumps(fnol, sort_keys=True).encode()).hexdigest()
+    run_id = "run_" + uuid.uuid4().hex[:12]
+    run_key, cache_key = f"run:{run_id}", f"runcache:{fp}"
+    fingerprint_ttl = max(RUN_CACHE_TTL_S, JOB_TIMEOUT_S * 2)
+    run_record = {"run_id": run_id, "status": "queued", "created_at": _now(),
+                  "correlation_id": cid, "fnol": fnol, "steps": []}
     if RUN_CACHE_TTL_S > 0:
-        cached = STORE.get_json(f"runcache:{fp}")
-        prev = cached and STORE.get_json(f"run:{cached}")
-        if prev and prev.get("status") in ("completed", "escalated"):
-            RUN_CACHE_HITS_TOTAL.inc()
-            CLAIMS_SUBMITTED_TOTAL.labels(channel=channel, status="cached").inc()
-            log.info("cache hit", extra={"correlation_id": cid, "run_id": cached, "cache": "hit"})
-            return JSONResponse({"run_id": cached, "status": prev["status"], "poll_url": f"/runs/{cached}",
-                                 "cached": True}, status_code=200, headers={"X-Cache": "HIT"})
+        # Atomically publish a queued run and its fingerprint so concurrent identical submissions share one job.
+        for _ in range(3):
+            cached = STORE.get_json(cache_key)
+            if cached:
+                prev = STORE.get_json(f"run:{cached}")
+                if prev and prev.get("status") in ("completed", "escalated"):
+                    RUN_CACHE_HITS_TOTAL.inc()
+                    CLAIMS_SUBMITTED_TOTAL.labels(channel=channel, status="cached").inc()
+                    return JSONResponse({"run_id": cached, "status": prev["status"],
+                                         "poll_url": f"/runs/{cached}", "cached": True},
+                                        status_code=200, headers={"X-Cache": "HIT"})
+                if prev and prev.get("status") in ("queued", "running"):
+                    return JSONResponse({"run_id": cached, "status": prev["status"],
+                                         "poll_url": f"/runs/{cached}", "duplicate": True},
+                                        status_code=202, headers={"X-Cache": "HIT"})
+                created = STORE.replace_run_if_value(cache_key, cached, run_key, run_id, run_record,
+                                                     fingerprint_ttl, RUN_TTL_S)
+            else:
+                created = STORE.create_run_if_absent(cache_key, run_key, run_id, run_record,
+                                                     fingerprint_ttl, RUN_TTL_S)
+            if created:
+                break
+        else:
+            return JSONResponse({"detail": "could not claim this submission; please retry"}, status_code=503)
+    else:
+        STORE.set_json(run_key, run_record, ttl=RUN_TTL_S)
 
+    try:
+        enqueue(run_id, fnol)
+    except Exception:
+        STORE.set_json(run_key, {**run_record, "status": "failed", "finished_at": _now()}, ttl=RUN_TTL_S)
+        if RUN_CACHE_TTL_S > 0:
+            STORE.delete_json_if_value(cache_key, run_id)
+        log.exception("could not enqueue run", extra={"correlation_id": cid, "run_id": run_id})
+        return JSONResponse({"detail": "claim could not be queued; please retry"}, status_code=503)
     RUN_CACHE_MISSES_TOTAL.inc()
     CLAIMS_SUBMITTED_TOTAL.labels(channel=channel, status="queued").inc()
-    run_id = "run_" + uuid.uuid4().hex[:12]
-    STORE.set_json(f"run:{run_id}", {"run_id": run_id, "status": "queued", "created_at": _now(),
-                                     "correlation_id": cid, "fnol": fnol, "steps": []}, ttl=RUN_TTL_S)
-    if RUN_CACHE_TTL_S > 0:
-        STORE.set_json(f"runcache:{fp}", run_id, ttl=RUN_CACHE_TTL_S)
-    enqueue(run_id, fnol)
     log.info("queued", extra={"correlation_id": cid, "run_id": run_id})
     return JSONResponse({"run_id": run_id, "status": "queued", "poll_url": f"/runs/{run_id}"}, status_code=202,
                         headers={"X-Cache": "MISS"})
@@ -248,8 +295,10 @@ def health():
         ok = bool(STORE.ping())
     except Exception as e:
         return JSONResponse({"status": "unhealthy", "store": str(e)}, status_code=503)
-    return {"status": "ok" if ok else "unhealthy", "queue": QUEUE_BACKEND,
-            "store": os.getenv("STORE_BACKEND", "memory")}
+    if not ok:
+        return JSONResponse({"status": "unhealthy", "queue": QUEUE_BACKEND,
+                             "store": os.getenv("STORE_BACKEND", "memory")}, status_code=503)
+    return {"status": "ok", "queue": QUEUE_BACKEND, "store": os.getenv("STORE_BACKEND", "memory")}
 
 
 @app.get("/metrics")

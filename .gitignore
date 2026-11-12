@@ -1,10 +1,13 @@
 .env
+secrets/*.txt
+!secrets/*.example
 runs/
 __pycache__/
 .ipynb_checkpoints/
 *.pyc
 .venv/
 index/
+data/policies/
 
 # load-test scratch files
 docs/loadtest_results/*.stop

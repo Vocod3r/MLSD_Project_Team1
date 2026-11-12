@@ -14,18 +14,21 @@ This file contains **no results**. The harness prints and saves the numbers when
 third party); the scripted stub cannot pass these, a real model might. They are reported separately so the number you quote
 is honest.
 
-**Important: the supporting quotes currently come from the stand-in corpus in `app/agents.py`**, not from your real policy.
-When Person B's index is wired in (and you have a private-car policy, see below), update each scenario's `support` quotes
-and `must_cite` clause ids to the real passages. At Evaluation 1 the brief wants you to show the real passages the 4.1 case
-depends on, so do this for at least `S02`-`S06` first.
+**Important: the default evaluation labels still refer to the sample corpus.** Build the FAISS index as described in
+[`CORPUS.md`](CORPUS.md), then update each scenario's `support` quotes, `must_cite` clause ids, and expected outcomes to
+match the selected policy. At Evaluation 1 the brief wants the real passages the section 4.1 case depends on; update at
+least `S02`-`S06` before treating scores as real-policy results.
 
 ## 1. Setup
 
 ```bash
-pip install -r requirements-app.txt -r requirements-eval.txt
-cp .env.example .env     # set LLM_PROVIDER=openai_compatible, LLM_BASE_URL, LLM_API_KEY, LLM_MODEL
+pip install -r requirements-app.txt -r requirements.txt -r requirements-eval.txt
+cp .env.example .env     # set LLM_PROVIDER=openai_compatible, LLM_BASE_URL, and LLM_MODEL
                          # and LLM_PRICE_IN_PER_1K / LLM_PRICE_OUT_PER_1K (your provider's price list), so cost is non-zero
 ```
+
+For Docker Compose, put the provider key in `secrets/llm_api_key.txt`; see [SECRETS.md](SECRETS.md).
+For running Python directly, `LLM_API_KEY` may still be set in the shell environment.
 
 The harness reads `.env` exactly as the service does. If `LLM_PROVIDER=stub` it prints a banner saying the numbers measure
 the stub, not a model.

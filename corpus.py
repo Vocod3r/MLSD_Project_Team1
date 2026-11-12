@@ -5,8 +5,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -15,8 +17,8 @@ from pypdf import PdfReader
 
 
 ROOT = Path(__file__).resolve().parent
-PDF_DIR = ROOT / "data" / "policies"
-INDEX_DIR = ROOT / "index"
+PDF_DIR = Path(os.getenv("POLICY_PDF_DIR", str(ROOT / "data" / "policies")))
+INDEX_DIR = Path(os.getenv("CORPUS_INDEX_DIR", str(ROOT / "index")))
 META_PATH = INDEX_DIR / "chunks.jsonl"
 STATE_PATH = INDEX_DIR / "documents.json"
 FAISS_PATH = INDEX_DIR / "corpus.faiss"
@@ -481,6 +483,7 @@ def build_index(document: Path | None = None) -> None:
         print(f"Removed: {', '.join(sorted(deleted_names))}")
 
 
+@lru_cache(maxsize=1)
 def _load_search_assets():
     """Load FAISS, chunks and the embedding model."""
     try:
@@ -507,6 +510,11 @@ def _load_search_assets():
         )
 
     return index, chunks, model
+
+
+def warm_search_assets() -> None:
+    """Load and cache the FAISS index and embedding model before handling jobs."""
+    _load_search_assets()
 
 
 def search_corpus(

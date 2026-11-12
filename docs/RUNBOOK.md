@@ -29,7 +29,7 @@ be discarded after every job and each job would re-spend its whole retry budget 
 
 **Recover**
 1. Fix the cause: renew/replace the key or quota, wait out the rate-limit window, or switch provider by changing
-   `LLM_BASE_URL` / `LLM_API_KEY` / `LLM_MODEL` in `.env` and running `docker compose up -d --force-recreate worker`.
+   `LLM_BASE_URL` / `LLM_MODEL` in `.env`, update `secrets/llm_api_key.txt`, then run `docker compose up -d --force-recreate worker`.
 2. The breaker half-opens by itself after `CB_RESET_S` (default 30 s) and closes on the first successful call. To force it
    closed immediately once the provider is healthy: `docker compose exec -T redis redis-cli del cb:llm`.
 3. Re-submit the claims that ended `degraded` (they were routed to a human, so nothing is lost, but they have no
@@ -61,7 +61,7 @@ python scripts/report.py --window 5m                           # run latency, ru
 **Recover**
 1. Add capacity: `docker compose up -d --scale worker=6` (adjust). Check the provider's rate limit first (failure mode 1).
 2. If one run is stuck: RQ stops a job that exceeds `JOB_TIMEOUT_S` (180 s). Check that run's status with `GET /runs/{id}`; if it never reached a terminal status, re-submit the claim.
-3. If the cause is one client looping against the API: the per-client rate limit (`RATE_LIMIT_PER_MIN`) returns 429 to that
+3. If the cause is one source repeatedly calling the API: the per-IP rate limit (`RATE_LIMIT_PER_MIN`) returns 429 to that
    client; confirm with `rate_limit_exceeded_total` in `python scripts/report.py`.
 4. Longer term: let one worker run several jobs concurrently, or reject new work when the queue is deeper than ~2x workers
    (neither is implemented; see `docs/LOAD_TEST.md`).

@@ -41,7 +41,7 @@ def payload(description: str, **kw) -> dict:
 
 def submit_and_wait(api: str, body: dict, timeout=150.0) -> tuple[dict, float]:
     t0 = time.perf_counter()
-    r = httpx.post(f"{api}/claims", json=body, headers={"X-Client-Id": "demo_" + uuid.uuid4().hex[:6]}, timeout=15)
+    r = httpx.post(f"{api}/claims", json=body, timeout=15)
     if r.status_code != 202:
         return {"status": f"HTTP {r.status_code}", "detail": r.text[:300]}, time.perf_counter() - t0
     url = r.json()["poll_url"]

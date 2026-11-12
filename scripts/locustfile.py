@@ -82,7 +82,7 @@ class ClaimIntakeUser(HttpUser):
         if MALFORMED_PCT and random.random() * 100 < MALFORMED_PCT:
             return self.malformed()
         uid, payload = valid_payload()
-        headers = {"Content-Type": "application/json", "X-Client-Id": f"client_{uid}"}
+        headers = {"Content-Type": "application/json"}
         t0 = time.perf_counter()
         with self.client.post("/claims", json=payload, headers=headers, name="POST /claims [valid]",
                               catch_response=True) as resp:

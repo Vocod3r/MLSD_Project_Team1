@@ -4,9 +4,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /srv
 
 COPY requirements-app.txt .
-RUN pip install --no-cache-dir -r requirements-app.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements-app.txt -r requirements.txt
 
 COPY app/ app/
+COPY corpus.py corpus.py
 COPY web/ web/
 
 # one image, two roles: docker-compose sets the command for api and worker

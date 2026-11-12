@@ -19,7 +19,7 @@ machine** (that is also what a viva expects). Commands run from the repo root.
 
 **2. Commit the SLO before any measurement.** `git add docs/SLO.md && git commit -m "docs: declare p95 SLO"`. Then do not edit section 2.
 
-**3. Evaluation with your real provider** (`docs/EVALUATION.md`): put provider settings and prices in `.env`; run the baseline,
+**3. Evaluation with your real provider** (`docs/EVALUATION.md`): put provider settings and prices in `.env`, and provide the key as described in `docs/SECRETS.md`; run the baseline,
 make one deliberate change, run `compare`. Run `python scripts/cost_report.py --runs-dir eval/runs` for cost per 100 runs.
 
 **4. Bring the stack up with the stub and load-test it** (`docs/LOAD_TEST.md`):
@@ -39,10 +39,9 @@ most likely place to find one. Capture evidence while it happens (the template s
 ## Things that will look wrong if you do not know them
 
 - **`LLM_PROVIDER=stub` numbers are not model results.** The stub is scripted. The evaluation prints a banner when it is on.
-- **The corpus is a stand-in.** `app/agents.py` searches a 12-clause hard-coded private-car corpus, not Person B's index
-  (`corpus.py`). The evaluation scenarios' supporting quotes come from that stand-in. The brief wants a real private-car policy
-  and the same insurer's claims procedure; `insurance_policy_pdf.pdf` in the repo is a **two-wheeler** policy. Fix the corpus,
-  wire it in, then update the scenarios' `support` quotes and `must_cite` ids (see `docs/EVALUATION.md`).
+- **Use the right policy corpus.** The agent now searches `corpus.py`'s FAISS index when built; setup is in
+  `docs/CORPUS.md`. The included `insurance_policy_pdf.pdf` is a **two-wheeler** policy, not the private-car wording used
+  by the sample scenarios. Add the correct documents and update evaluation labels before presenting real-policy results.
 - **TruLens is the record store, not the metric engine** (see `docs/EVALUATION.md`).
 - **The circuit breaker state is shared in Redis** (`cb:llm`) when the stack runs under compose, because RQ forks a child per job.
 - **Prometheus scrapes workers by DNS** (`observability/prometheus.yml`); each worker serves its metrics on port 9101.
