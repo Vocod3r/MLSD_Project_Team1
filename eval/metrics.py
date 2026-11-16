@@ -79,6 +79,20 @@ def groundedness(position: str, cited_texts: list[str]) -> float | None:
     return ok / len(sents)
 
 
+def quote_in(quote: str, text: str) -> bool:
+    """Verbatim after norm(). A quote may leave words out only where it says so with "..." / "…": each piece between
+    ellipses must appear in the passage, in order. A quote stitched together without marking the gap is not verbatim."""
+    t, pos = norm(text), 0
+    for part in (norm(x) for x in re.split(r"\.\.\.|…", quote or "")):
+        if not part:
+            continue
+        i = t.find(part, pos)
+        if i < 0:
+            return False
+        pos = i + len(part)
+    return True
+
+
 def citation_issues(citations: list[dict], retrieved: dict[str, str]) -> tuple[int, int, int]:
     """(n_citations, n_unresolved_ids, n_non_verbatim_quotes)"""
     unresolved = bad_quote = 0
@@ -86,7 +100,7 @@ def citation_issues(citations: list[dict], retrieved: dict[str, str]) -> tuple[i
         text = retrieved.get(c.get("clause_id"))
         if text is None:
             unresolved += 1
-        elif norm(c.get("support", "")) and norm(c["support"]) not in norm(text):
+        elif norm(c.get("support", "")) and not quote_in(c["support"], text):
             bad_quote += 1
     return len(citations), unresolved, bad_quote
 

@@ -146,7 +146,9 @@ def cmd_run(a):
     tru = None if a.no_trulens else TruRecorder(a.label, outdir / "trulens.sqlite")
     t0 = time.time()
     scores, per_case = [], []
-    for case in cases:
+    for n, case in enumerate(cases):
+        if n and a.pause:
+            time.sleep(a.pause)  # stay under a free-tier provider's requests-per-minute limit
         fnol = build_fnol(doc["base"], case)
         valid, errs = validate_fnol(fnol)
         if valid is None:
@@ -237,6 +239,8 @@ def main():
     r.add_argument("--only", nargs="+", help="run only these scenario ids")
     r.add_argument("--out", default=str(ROOT / "eval" / "results"))
     r.add_argument("--no-trulens", action="store_true")
+    r.add_argument("--pause", type=float, default=0.0,
+                   help="seconds to wait between scenarios (e.g. 20 for Gemini's free tier, which returns HTTP 429 otherwise)")
     r.set_defaults(fn=cmd_run)
     c = sub.add_parser("compare")
     c.add_argument("before")

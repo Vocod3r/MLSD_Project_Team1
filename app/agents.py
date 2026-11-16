@@ -72,7 +72,7 @@ CFG = dict(
     LATE_REPORT_DAYS=env("LATE_REPORT_DAYS", 30, int),
     # prompts
     TRIAGE_PROMPT=env("TRIAGE_PROMPT", "triage-v1"),
-    COVERAGE_PROMPT=env("COVERAGE_PROMPT", "coverage-v2"),
+    COVERAGE_PROMPT=env("COVERAGE_PROMPT", "coverage-v3"),
     VERIFIER_PROMPT=env("VERIFIER_PROMPT", "verifier-v1"),
     # persistence of full run records (D5 reconstruction)
     RUNS_DIR=env("RUNS_DIR", "runs"),
@@ -359,6 +359,21 @@ Cited passages:
 $passages
 JSON:"""),
 }
+
+
+# coverage-v3 = coverage-v2 plus three rules learned from the first Gemini evaluation (16 Nov):
+# Gemini spliced quotes together (lead-in + item 6), stopped at the limitation without reading the general
+# exceptions, and called a clear limitation "uncertain". Kept as a separate version so v2 vs v3 can be compared (L2).
+PROMPTS["coverage-v3"] = dict(PROMPTS["coverage-v2"], system=PROMPTS["coverage-v2"]["system"].replace(
+    """- Cite only clauses returned by your own tool calls in this run. Copy "support" verbatim.""",
+    """- Cite only clauses returned by your own tool calls in this run. Copy "support" verbatim as ONE continuous
+  span of the clause text. Do not join separate parts of a clause; if you leave words out, write ... where they were.
+- When a limitation applies, also search the exclusions / general exceptions for what the policy says about loss
+  while the vehicle is used that way, and cite that provision too.""").replace(
+    """- If provisions conflict, or facts needed to decide are missing, use "uncertain".""",
+    """- Use "uncertain" only if provisions genuinely conflict or a fact needed to decide is missing. When the facts
+  clearly fall under a limitation or exclusion, that is "outside_cover", not "uncertain"."""))
+assert PROMPTS["coverage-v3"]["system"] != PROMPTS["coverage-v2"]["system"]
 
 
 def render_prompt(prompt_id, **vars_):
@@ -918,15 +933,26 @@ def tool_executor(state: RunState):
 
 
 def _norm(s):
-    return re.sub(r"\s+", " ", re.sub(r"[\"'“”‘’…]", "", (s or "").lower())).strip(" .")
+    # case, punctuation and spacing are ignored; words must match exactly (same rule as eval/metrics.py)
+    return re.sub(r"\s+", " ", re.sub(r"[^\w%]+", " ", (s or "").lower())).strip()
 
 
 def support_found(support, passage_text):
-    s, p = _norm(support), _norm(passage_text)
-    if s and s in p:
-        return True
-    st = _tokens(support)
-    return bool(st) and sum(t in set(_tokens(passage_text)) for t in st) / len(st) >= 0.85
+    """The quote must be copied from the passage. Words may be left out only where the quote says so with "...";
+    each piece between the ellipses must appear exactly, in order. (Before 16 Nov this accepted 85% word overlap,
+    which let spliced quotes through.)"""
+    p = _norm(passage_text)
+    parts = [_norm(x) for x in re.split(r"\.\.\.|…", support or "")]
+    parts = [x for x in parts if x]
+    if not parts:
+        return False
+    pos = 0
+    for part in parts:
+        i = p.find(part, pos)
+        if i < 0:
+            return False
+        pos = i + len(part)
+    return True
 
 
 def verifier_agent(state: RunState):
@@ -942,7 +968,8 @@ def verifier_agent(state: RunState):
         if cid not in retrieved:
             issues.append(f"citation {cid} does not resolve to any passage retrieved in this run")
         elif not support_found(c.get("support", ""), retrieved[cid]["text"]):
-            issues.append(f"quoted support for {cid} does not appear in that passage")
+            issues.append(f"quoted support for {cid} is not an exact copy of that passage (copy one continuous "
+                          f"span; mark any left-out words with ...)")
 
     llm_meta, llm_out = None, None
     if not issues:

@@ -18,6 +18,24 @@ The labels in `eval/scenarios.json` refer to the ICICI Lombard corpus in `data/p
 [`CORPUS.md`](CORPUS.md)): `must_cite` clause IDs exist in `index/chunks.jsonl` and every `support` quote is found in
 the cited clause. If the documents or chunker change, re-check them before quoting scores.
 
+### Changes after the first Gemini run (16 Nov 2026)
+
+The first run with Gemini (`--label gemini`, prompt coverage-v2) scored core outcome accuracy 0.714. Reading the run
+records showed three things, and each was fixed separately so the next run shows its effect:
+
+1. **Labels.** S02-S05 required `GENERAL-EXCEPTIONS` but not `LIMITATIONS-AS-TO-USE`, the clause that actually restricts
+   use. `must_cite` is now Section I + Limitations as to Use; General Exceptions stays as labelled support. Re-scoring
+   the same runs with the corrected labels gives core outcome accuracy 0.810.
+2. **Quotes.** Every "hallucination" in that run was a spliced quote (the Section I lead-in joined to item 6 with no
+   marker), not invented text. The verifier accepted these (85% word overlap) while the metric did not. Both now use
+   one rule: verbatim after normalisation, with words left out only where the quote says `...`.
+3. **Prompt.** coverage-v3 (now the default) tells the model to quote one continuous span, to check the general
+   exceptions when a limitation applies, and not to call a clear limitation "uncertain". Compare it with v2 using
+   `--set COVERAGE_PROMPT=coverage-v2` vs `coverage-v3` (L2).
+
+Four runs were `degraded`: three Gemini HTTP 429 (free-tier rate limit) and one `MALFORMED_FUNCTION_CALL` finish
+reason. Use `--pause 20` on a free-tier key.
+
 ## 1. Setup
 
 ```bash
